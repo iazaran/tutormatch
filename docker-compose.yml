@@ -1,0 +1,31 @@
+version: '2'
+services:
+
+  webserver:
+    image: nginx:alpine
+    container_name: nginx
+    volumes:
+      - ./:/var/www
+      ## copy nginx configuration for our application ##
+      - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
+    ports:
+      ## run the webserver on port 8080 ##
+      - "8080:80"
+
+  app:
+    ## read php image from our custom docker image ##
+    build:
+      context: .
+      dockerfile: ./docker/php/Dockerfile
+    container_name: app
+    volumes:
+      ## copy project files to /var/www ##
+      - ./:/var/www
+    working_dir: /var/www
+
+  redis:
+    image: redis
+    container_name: redis
+    volumes:
+      ## keep redis data on localhost so we don't lose them ##
+      - ./redis:/data
