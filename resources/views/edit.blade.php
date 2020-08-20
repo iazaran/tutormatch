@@ -1,11 +1,11 @@
 @include('layouts.header')
 <h2 class="text-center pb-5">Update existed tutor</h2>
-<form action="{{route('tutors.update', ['tutor' => $data->id])}}" method="POST">
+<form action="{{route('tutors.update', ['tutor' => $id])}}" method="POST">
     @csrf
     @method('PUT')
     <div class="form-group">
         <label for="title">Title</label>
-        <input type="text" class="form-control" id="title" name="title" value="{{old('title')}}">
+        <input type="text" class="form-control" id="title" name="title" value="{{old('title', json_decode($data)->title)}}">
         @error('title')
         <div class="alert alert-danger alert-dismissible fade show my-1" role="alert">
             {{$message}}
@@ -17,7 +17,7 @@
     </div>
     <div class="form-group mt-4">
         <label for="description">Description</label>
-        <input type="text" class="form-control" id="description" name="description" value="{{old('description')}}">
+        <input type="text" class="form-control" id="description" name="description" value="{{old('description', json_decode($data)->description)}}">
         @error('description')
         <div class="alert alert-danger alert-dismissible fade show my-1" role="alert">
             {{$message}}

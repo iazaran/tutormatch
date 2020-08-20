@@ -17,5 +17,5 @@
     <title>TutorMatch</title>
 </head>
 <body class="container">
-<a href="." class="text-dark"><h1 class="text-center mt-5">TutorMatch</h1></a>
+<a href="/" class="text-dark"><h1 class="text-center mt-5">TutorMatch</h1></a>
 <hr class="my-4">
