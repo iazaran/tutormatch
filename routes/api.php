@@ -13,4 +13,4 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::apiResource('tutors', 'TutorController')->except('show');
+Route::apiResource('tutors', 'API\TutorController')->except('show');
