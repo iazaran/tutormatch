@@ -13,6 +13,7 @@ class TutorController extends Controller
 
     /**
      * Instantiate a new controller instance.
+     * Building a new Redis instance.
      *
      * @return void
      */
@@ -23,7 +24,7 @@ class TutorController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Return a listing of the resource.
      *
      * @return \Illuminate\Http\JsonResponse
      */
@@ -36,6 +37,9 @@ class TutorController extends Controller
             true
         );
 
+        /**
+         * Make a pretty array to convert to JSON
+         */
         $result = [];
         foreach ($data as $key => $val) {
             $result[] = [
@@ -57,6 +61,10 @@ class TutorController extends Controller
     public function store(Request $request)
     {
         $validator = $this->customValidate($request);
+
+        /**
+         * Return an error
+         */
         if ($validator->fails()) {
             return response()->json([
                 'status'=>'Error',
@@ -97,6 +105,10 @@ class TutorController extends Controller
     public function update(Request $request, $id)
     {
         $validator = $this->customValidate($request);
+
+        /**
+         * Return an error
+         */
         if ($validator->fails()) {
             return response()->json([
                 'status'=>'Error',
@@ -105,7 +117,6 @@ class TutorController extends Controller
         }
 
         $this->removeData($id);
-
         $this->redis->zAdd(
             'tutor',
             ['NX'],
@@ -122,7 +133,7 @@ class TutorController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($id)
     {
@@ -141,12 +152,10 @@ class TutorController extends Controller
      */
     private function customValidate(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        return Validator::make($request->all(), [
             'title' => 'required|min:3',
             'description' => 'required|min:8',
         ]);
-
-        return $validator;
     }
 
     /**

@@ -12,6 +12,7 @@ class TutorController extends Controller
 
     /**
      * Instantiate a new controller instance.
+     * Building a new Redis instance.
      *
      * @return void
      */
@@ -59,6 +60,10 @@ class TutorController extends Controller
     public function store(Request $request)
     {
         $validator = $this->customValidate($request);
+
+        /**
+         * Return an error
+         */
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
         }
@@ -114,12 +119,15 @@ class TutorController extends Controller
     public function update(Request $request, $id)
     {
         $validator = $this->customValidate($request);
+
+        /**
+         * Return an error
+         */
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
         }
 
         $this->removeData($id);
-
         $this->redis->zAdd(
             'tutor',
             ['NX'],
@@ -151,12 +159,10 @@ class TutorController extends Controller
      */
     private function customValidate(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        return Validator::make($request->all(), [
             'title' => 'required|min:3',
             'description' => 'required|min:8',
         ]);
-
-        return $validator;
     }
 
     /**
